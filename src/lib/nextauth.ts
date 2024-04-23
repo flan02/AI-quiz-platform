@@ -1,6 +1,6 @@
-import User from "@/types";
+import User from "@/models/user"
 import { connectDB } from "./mongodb";
-import { DefaultSession, NextAuthOptions } from "next-auth";
+import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import GoogleProvider from 'next-auth/providers/google';
 
 declare module "next-auth" {
@@ -52,10 +52,8 @@ export const authOptions: NextAuthOptions = {
         const newUser = await User.create({ fullname, email, image });
         token.id = newUser._id;
         console.log(newUser, token.id);
-        return newUser;
-
+        return token
       }
-
     },
     async session({ session, token }: any) {
       if (token) {
@@ -68,14 +66,11 @@ export const authOptions: NextAuthOptions = {
     },
 
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET as string,
 
 }
 
 
-/*
- if(token){}
-      session.user = token;
-      console.log("session callback", session, token, user);
-      return session; 
-*/
+export const getAuthSession = () => {
+  return getServerSession(authOptions)
+}

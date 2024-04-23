@@ -6,7 +6,7 @@ const userSchema = new Schema({
     required: true,
     unique: true,
     match: [
-      /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, "Email is not valid"
+      /([\w\-.]+@([\w-]+\.)+[\w-]{2,4})?$/, "Email is not valid"
     ]
   },
   password: {
