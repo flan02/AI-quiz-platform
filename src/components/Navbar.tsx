@@ -1,11 +1,15 @@
 import { getAuthSession } from "@/lib/nextauth"
 import Link from "next/link"
+import SignInButton from "./SignInButton"
+import Logout from "./Logout"
 
 
 type Props = {}
 
 const Navbar = async (props: Props) => {
+
   const session = await getAuthSession()
+  console.log(session);
   if (session?.user) {
     return <pre>{JSON.stringify(session.user, null, 2)}</pre>
   } else {
@@ -18,7 +22,8 @@ const Navbar = async (props: Props) => {
           </p>
         </Link>
         <div className="flex items-center">
-          <Link href=""></Link>
+          <SignInButton text="Sign In" />
+          <Logout text="Sign Out" />
         </div>
       </div>
     </nav>

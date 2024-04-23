@@ -24,6 +24,10 @@ const userSchema = new Schema({
     type: String,
     default: 'https://res.cloudinary.com/dhbig9jt8/image/upload/v1713217544/no-avatar_axft7q.png'
   },
+  sub: {
+    type: String,
+    default: 'no-sub'
+  },
   createdAt: {
     type: Date,
     default: Date.now
