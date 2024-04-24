@@ -75,7 +75,7 @@
     }
 
     .bgl {
-      @apply bg-rose-50;
+      @apply bg-teal-50;
     }
     .bgd {
       @apply bg-teal-900;
