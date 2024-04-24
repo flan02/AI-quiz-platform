@@ -3,6 +3,7 @@ import { Inter, Lexend } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
+import Providers from "@/components/Providers";
 
 const authors = [{
   name: "Dan Chanivet",
@@ -36,8 +37,10 @@ export default function RootLayout({
         lexend.className,
         'antialiased min-h-screen pt-16'
       )}>
-        <Navbar />
-        {children}
+        <Providers>
+          <Navbar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

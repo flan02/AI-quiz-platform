@@ -6,17 +6,22 @@ if (!MONGODB_URI) {
   throw new Error("No mongo connection string. Set MONGODB_URI environment variable.");
 }
 
-export const connectDB = async () => {
-  try {
-    const client = await mongoose.connect(MONGODB_URI)
-    if (client.connection.readyState === 1) console.log("Connected to MongoDB")
-    console.log("New connection to mongodb atlas cloud");
-    return Promise.resolve(true)
+let isConnected: boolean = false
 
-  } catch (error) {
-    console.log("Error connecting to MongoDB: ", error)
-    return Promise.resolve(false)
+export const connectDB = async () => {
+  if (!isConnected) {
+    try {
+      const client = await mongoose.connect(MONGODB_URI)
+      if (client.connection.readyState === 1) console.log("Connected to MongoDB")
+      console.log("New connection to mongodb atlas cloud");
+      isConnected = true
+      return Promise.resolve(true)
+    } catch (error) {
+      console.log("Error connecting to MongoDB: ", error)
+      return Promise.resolve(false)
+    }
   }
+  else console.log("Using existing connection to database")
 }
 
 
