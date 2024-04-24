@@ -73,4 +73,12 @@
     body {
       @apply bg-background text-foreground;
     }
+
+    .bgl {
+      @apply bg-teal-50;
+    }
+    .bgd {
+      @apply bg-teal-900;
+    }
   }
+

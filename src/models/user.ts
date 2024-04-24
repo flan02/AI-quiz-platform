@@ -6,7 +6,7 @@ const userSchema = new Schema({
     required: true,
     unique: true,
     match: [
-      /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, "Email is not valid"
+      /([\w\-.]+@([\w-]+\.)+[\w-]{2,4})?$/, "Email is not valid"
     ]
   },
   password: {
@@ -23,6 +23,10 @@ const userSchema = new Schema({
   image: {
     type: String,
     default: 'https://res.cloudinary.com/dhbig9jt8/image/upload/v1713217544/no-avatar_axft7q.png'
+  },
+  sub: {
+    type: String,
+    default: 'no-sub'
   },
   createdAt: {
     type: Date,

@@ -1,7 +1,11 @@
-import User from "@/types";
+import User from "@/models/user"
 import { connectDB } from "./mongodb";
-import { DefaultSession, NextAuthOptions } from "next-auth";
+import { DefaultSession, getServerSession, NextAuthOptions } from "next-auth";
 import GoogleProvider from 'next-auth/providers/google';
+import { DefaultJWT, JWT } from "next-auth/jwt";
+
+
+
 
 declare module "next-auth" {
   interface Session extends DefaultSession {
@@ -10,13 +14,14 @@ declare module "next-auth" {
       fullname: string;
       email: string;
       image: string;
+      sub: string
     };
   }
 }
 
 declare module 'next-auth/jwt' {
-  interface JWT {
-    id: string;
+  interface JWT extends DefaultJWT {
+    token: JWT
   }
 }
 
@@ -27,55 +32,74 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    })
+    }),
   ],
   session: {
     strategy: "jwt",
+    maxAge: 3600,
+    updateAge: 1800, // * 5 minutes
+
+  },
+  cookies: {
+    sessionToken: {
+      name: 'sessionToken',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true
+      }
+    }
   },
   callbacks: {
-    //async jwt({ token, user, account, profile, isNewUser }: any) {
-    async jwt({ token }) {
-      console.log(token);
-      const fullname = token.name;
-      const email = token.email;
-      const image = token.picture;
+    async jwt({ token }: JWT) {
+      //console.log('Values of the token', token);
+      const newUser = {
+        email: token.email,
+        password: token.sub,
+        fullname: token.name,
+        image: token.picture,
+        sub: token.sub
+      }
+      //console.log(newUser);
 
-      await connectDB();
-      const userFound = await User.findOne({ email: token.email });
-
-      if (userFound) {
-        token.id = userFound._id; // * adding to the token the id of the user database
-        return token;
-        //return {...token, createdAt: userFound?.createdAt, image: userFound?.image, username: userFound?.username, _id: userFound._id};
-      } else {
+      try {
         await connectDB();
-        const newUser = await User.create({ fullname, email, image });
-        token.id = newUser._id;
-        console.log(newUser, token.id);
-        return newUser;
-
+        const userFound = await User.findOne({ email: token.email }); // ? find the user in the database
+        if (userFound) return token;
+        await User.create(newUser);
+        return token
+      } catch (error) {
+        console.log(error);
+        return token
       }
 
     },
     async session({ session, token }: any) {
+      //console.log('Starter session value: ', session);
+
       if (token) {
-        session.user.id = token.id
-        session.user.fullname = token.fullname
-        session.user.email = token.email
-        session.user.image = token.image
+        session.user.sub = token.sub
+        session.user.exp = token.exp
+        session.user.iat = token.iat
+        session.user.jti = token.jti
+        session.user.expires = session['expires']
+
+
       }
+
+      // console.log('Values of the token', session);
       return session;
     },
 
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET as string,
+
 
 }
 
 
-/*
- if(token){}
-      session.user = token;
-      console.log("session callback", session, token, user);
-      return session; 
-*/
+export const getAuthSession = () => {
+
+  return getServerSession(authOptions)
+}
