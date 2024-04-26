@@ -18,4 +18,4 @@ const tokenSchema = new Schema({
 
 const Token = models.Token || model('Token', tokenSchema);
 
-module.exports = Token;
+export default Token;
