@@ -1,3 +1,4 @@
+'use client'  // ! It could be 'use server' by default. Pay attention to console errors
 import CustomWordCloud from "../CustomWordCloud"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 

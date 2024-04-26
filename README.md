@@ -5,3 +5,6 @@ Developed with nextjs, typescript, react, mongodb, tailwindcss, nextauth, openAI
 $ npm install lucide-react
 
 [lucide website](https://lucide.dev/icons/)
+
+#  Paste bin
+[paste bin](https://pastebin.com/)

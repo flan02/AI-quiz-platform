@@ -47,4 +47,4 @@ const questionSchema = new Schema({
 
 const Question = models.Question || model('Question', questionSchema);
 
-module.exports = Question;
+export default Question;

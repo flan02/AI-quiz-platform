@@ -32,4 +32,4 @@ const gameSchema = new Schema({
 
 const Game = models.Game || model('Game', gameSchema);
 
-module.exports = Game;
+export default Game;

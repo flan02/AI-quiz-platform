@@ -17,10 +17,11 @@ export default async function Home() {
           <CardHeader>
             <CardTitle>Welcome to Quiz AI</CardTitle>
             <CardDescription>
-              <p>Quiz AI is a quiz application that uses AI to generate questions and answers.</p>
-              <p className="mb-2">It is a work in progress and is being developed by </p>
-              <a className="text-blue-700 underline" href="https://www.chanivetdan.tech" target="_blank"> author website </a>
+              Quiz AI is a quiz application that uses AI to generate questions and answers.
+              It is a work in progress and is being developed by:
+
             </CardDescription>
+            <a className="text-blue-700 underline" href="https://www.chanivetdan.tech" target="_blank"> author website </a>
           </CardHeader>
           <CardContent>
             <SignInButton text="Sign In with Google" />

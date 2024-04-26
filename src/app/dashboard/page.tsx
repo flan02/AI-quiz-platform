@@ -16,6 +16,7 @@ export const metadata = {
 
 const Dashboardpage = async (props: Props) => {
   const session = await getAuthSession()
+  console.log('Session value is: ', session);
   if (!session?.user) return redirect('/')
   return (
     <main className="p-8 mx-auto max-w-7xl ">
