@@ -66,8 +66,10 @@ export const authOptions: NextAuthOptions = {
       try {
         await connectDB();
         const userFound = await User.findOne({ email: token.email }); // ? find the user in the database
+        //console.log('User found: ', userFound)
         if (userFound) return token;
-        await User.create(newUser);
+        const userAdded = await User.create(newUser);
+        //token._id = '662840e80835770264eb9e02';
         return token
       } catch (error) {
         console.log(error);
@@ -79,6 +81,7 @@ export const authOptions: NextAuthOptions = {
       //console.log('Starter session value: ', session);
 
       if (token) {
+        session.user.id = '662840e80835770264eb9e02'
         session.user.sub = token.sub
         session.user.exp = token.exp
         session.user.iat = token.iat
@@ -88,7 +91,7 @@ export const authOptions: NextAuthOptions = {
 
       }
 
-      // console.log('Values of the token', session);
+      //console.log('Values of the session inherited by the token', session);
       return session;
     },
 

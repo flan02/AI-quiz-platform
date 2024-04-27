@@ -1,6 +1,6 @@
 // TODO: Two different ways to do the same thing
 
-enum GameType {
+export enum GameType {
   mcq, open_ended
 }
 

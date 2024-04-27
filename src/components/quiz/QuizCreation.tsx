@@ -9,12 +9,17 @@ import { Button } from "../ui/button"
 import { Input } from "../ui/input"
 import { BookOpen, CopyCheck } from "lucide-react"
 import { Separator } from "../ui/separator"
+import { useMutation } from "@tanstack/react-query"
+import { useRouter } from "next/navigation"
+import { POST } from "@/services/axios"
+//import axios from "axios"
 
 type Props = {}
 
 type Input = z.infer<typeof quizSchema>
 
 const QuizCreation = (props: Props) => {
+  const router = useRouter()
   const form = useForm<Input>({
     resolver: zodResolver(quizSchema),
     defaultValues: {
@@ -23,12 +28,36 @@ const QuizCreation = (props: Props) => {
       amount: 5
     }
   })
+  form.watch() // * re-render the component when the form values change
 
-  const onSubmit = (input: Input) => {
-    console.log('clicked', input);
+  const setGame = async ({ amount, topic, type }: Input) => {
+    const data = { amount, topic, type }
+    return POST('/game', data)
   }
 
-  form.watch() // * re-render the component when the form values change
+  const mutationQuiz = useMutation({
+    mutationFn: setGame
+  })
+
+
+
+  const onSubmit = (input: Input) => {
+    mutationQuiz.mutate({
+      amount: input.amount,
+      topic: input.topic,
+      type: input.type
+    }, {
+      onSuccess: ({ gameId }) => {
+        if (form.getValues('type') === 'open_ended') router.push(`/play/open_ended/${gameId}`)
+        if (form.getValues('type') === 'mcq') router.push(`/play/mcq/${gameId}`)
+      },
+      onError: (error: any) => {
+        console.log('Mutation Game error: ', error)
+      }
+    })
+  }
+
+
 
   return (
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -91,7 +120,7 @@ const QuizCreation = (props: Props) => {
                 </Button>
               </div>
               <Button
-                type="submit" className="w-full bg-blue-600 hover:bg-blue-700 hover:text-white">Submit</Button>
+                disabled={mutationQuiz.isPending ? true : false} type="submit" className="w-full bg-blue-600 hover:bg-blue-700 hover:text-white">Submit</Button>
             </form>
           </Form>
         </CardContent>

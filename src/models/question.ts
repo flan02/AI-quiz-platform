@@ -1,8 +1,9 @@
+import { GameType } from '@/enum/index';
 import { Schema, model, models } from 'mongoose'
 
 
 const questionSchema = new Schema({
-  id: {
+  _id: {
     type: Schema.Types.ObjectId,
     required: true,
   },
@@ -19,13 +20,13 @@ const questionSchema = new Schema({
     type: String,
     required: true,
   },
-  topic: {
+  questionType: {
     type: String,
-    required: true,
+    required: true
   },
   options: { // for mcq questions
-    type: Schema.Types.Mixed,
-    optional: true,
+    type: Schema.Types.Mixed, // JSON format
+    required: true,
   },
   isCorrect: { // for mcq questions
     type: Boolean,
@@ -33,11 +34,7 @@ const questionSchema = new Schema({
   },
   percentajeCorrect: { // for open_ended questions
     type: Number,
-    required: true,
-  },
-  questionType: {
-    type: GameType,
-    required: true
+    optional: true,
   },
   userAnswer: {
     type: String,
