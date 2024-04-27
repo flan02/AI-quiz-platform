@@ -1,5 +1,5 @@
 import { Schema, model, models } from 'mongoose'
-
+import { GameType } from "@/enum/index"
 
 
 const gameSchema = new Schema({
@@ -25,7 +25,7 @@ const gameSchema = new Schema({
     required: true,
   },
   gameType: {
-    type: GameType,
+    type: String,
     required: true,
   },
 });

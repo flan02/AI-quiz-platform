@@ -52,22 +52,6 @@ export async function strict_output(
       output_format_prompt += `\nGenerate an array of json, one json for each input element.`;
     }
 
-    // TODO: Use OpenAI to get a response
-    // * openai v3
-    /*
-    const response = await openai.createChatCompletion({
-      temperature: temperature,
-      model: model,
-      messages: [
-        {
-          role: "system",
-          content: system_prompt + output_format_prompt + error_msg,
-        },
-        { role: "user", content: user_prompt.toString() },
-      ],
-    });
-    */
-
     // * openai v4
     const response = await openai.chat.completions.create({
       temperature: temperature,
