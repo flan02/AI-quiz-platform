@@ -45,5 +45,8 @@ export const POST = async (req: Request, res: Response) => {
         error: error.issues
       });
     }
+    return NextResponse.json({
+      error: 'Internal server error'
+    })
   }
 }
