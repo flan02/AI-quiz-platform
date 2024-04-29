@@ -3,10 +3,6 @@ import { Schema, model, models } from 'mongoose'
 
 
 const questionSchema = new Schema({
-  _id: {
-    type: Schema.Types.ObjectId,
-    required: true,
-  },
   gameId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -26,7 +22,8 @@ const questionSchema = new Schema({
   },
   options: { // for mcq questions
     type: Schema.Types.Mixed, // JSON format
-    required: true,
+    default: {},
+    required: false,
   },
   isCorrect: { // for mcq questions
     type: Boolean,

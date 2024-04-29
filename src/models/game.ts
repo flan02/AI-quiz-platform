@@ -3,10 +3,6 @@ import { GameType } from "@/enum/index"
 
 
 const gameSchema = new Schema({
-  _id: {
-    type: Schema.Types.ObjectId,
-    required: true,
-  },
   userId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -14,7 +10,8 @@ const gameSchema = new Schema({
   },
   iat: {
     type: Date,
-    default: Date.now,
+    required: true,
+    default: Date.now(),
   },
   exp: {
     type: Date,
