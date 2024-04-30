@@ -14,7 +14,9 @@ import { useRouter } from "next/navigation"
 import { POST } from "@/services/axios"
 //import axios from "axios"
 
-type Props = {}
+type Props = {
+
+}
 
 type Input = z.infer<typeof quizSchema>
 
@@ -48,7 +50,7 @@ const QuizCreation = (props: Props) => {
       type: input.type
     }, {
       onSuccess: ({ gameId }) => {
-        if (form.getValues('type') === 'open_ended') router.push(`/play/open_ended/${gameId}`)
+        if (form.getValues('type') === 'open_ended') router.push(`/play/open-ended/${gameId}`)
         if (form.getValues('type') === 'mcq') router.push(`/play/mcq/${gameId}`)
       },
       onError: (error: any) => {
