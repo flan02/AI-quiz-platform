@@ -8,40 +8,43 @@ import Game from "@/models/game";
 import Question from "@/models/question";
 import { connectDB } from "@/lib/mongodb";
 
+
+
 export async function POST(req: NextRequest, res: NextResponse) {
 
   // ! Fix the session issue. I can't retrieve the user session id
   // TODO Take a look into req cookies as well.
-  //const session = getAuthSession();
+  //const session = await getAuthSession();
   //console.log('User session id to mongodb query: ', session);
 
   try {
     //if (!session?.user.email) return NextResponse.json({ error: 'Unauthorized. You must be logged in to create a quiz' }, { status: 401 });
     const body = await req.json();
     //const { topic, type, amount } = quizSchema.parse(body);
+    console.log('Body: ', body);
     const { topic, type, amount } = body;
-    //console.log('Values of the quiz schema: ', amount, topic, type, session);
+
     await connectDB()
     const game = {
-      userId: '662840e80835770264eb9e02',
+      userId: '662840e80835770264eb9e02',  // ! This is a temporary solution. We need to get the user id from the session
       topic,
       gameType: type,
     }
 
     const newGame = await Game.create(game)
 
-    // console.log('Game created: ', newGame);
+    console.log('Game created: ', newGame);
     // return NextResponse.json({ message: 'Quiz created successfully', newGame: newGame }, { status: 200 });
 
     // * This call will generate the questions for us.
-    //console.log(process.env.API_URL);
+    //console.log('API endpoint', process.env.API_URL);
     const response = await axios.post(`${process.env.API_URL}/questions`, {
       amount,
       topic,
       type
     })
 
-    console.log(response.data);
+    //console.log(response.data);
 
     if (type === 'mcq') {
       let questionData = response.data.questions.map((question: type_mcqQuestion) => {
@@ -55,9 +58,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
           questionType: 'mcq',
         }
       })
+
       questionData.options = JSON.stringify(questionData.options)
 
-      await Question.create(questionData)
+      console.log('Question data before adding: ', questionData);
+      const newQuestion = await Question.create(questionData)
+      console.log('New question added: ', newQuestion);
+
     } else if (type === 'open_ended') {
       let questionData = response.data.questions.map((question: type_openEnded) => {
         return {
@@ -68,7 +75,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
         }
       })
       //questionData.options = JSON.stringify(questionData.options)
-      console.log('Question data: ', questionData);
+      // console.log('Question data: ', questionData);
       await Question.create(questionData)
     }
     return NextResponse.json({ gameId: newGame._id }, { status: 200 })
@@ -87,18 +94,17 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
 }
 
-/*
- } catch (error) {
-    if (error instanceof ZodError) {
-      return NextResponse.json({
-        status: 400, // ? invalid request
-        error: error.issues
-      });
-    } else {
-      return NextResponse.json({
-        error: 'Internal server error from nextjs api route',
-        message: (error as any).message
-      })
-    }
+
+export async function GET(req: NextRequest, res: NextResponse) {
+
+  // ! Try to use a middleware to intercept the request and check if the user is authenticated, and save the session.user.id
+  try {
+
+    // connectDB()
+    // const games = await Game.find({ _id: '662fd1ae4c9c436ee723eebc' })
+    // return NextResponse.json({ games }, { status: 200 })
+
+  } catch (error) {
+    return NextResponse.json({ error: 'Internal server error' })
   }
-  */
+}

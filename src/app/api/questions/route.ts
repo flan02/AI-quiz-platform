@@ -3,7 +3,7 @@ import { quizSchema } from "@/schemas/form/quiz.schema";
 import { ZodError } from "zod";
 import { strict_output } from "@/lib/gpt";
 import { getAuthSession } from "@/lib/nextauth";
-import { getServerSession } from 'next-auth'
+
 
 // TODO: POSTMAN 
 // * http://localhost:3000/api/questions
