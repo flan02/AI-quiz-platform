@@ -1,5 +1,7 @@
+import Mcq from '@/components/Mcq'
 import { getAuthSession } from '@/lib/nextauth'
-import axios from 'axios'
+
+import { getGame } from '@/services/server'
 import { redirect } from 'next/navigation'
 
 
@@ -13,31 +15,22 @@ const McqPage = async ({ params }: Props) => {
   const session = await getAuthSession()
   if (!session?.user) return redirect('/')
 
-  try {
-    console.log('Mcq Page', session);
-    const games = await axios.get(`http://localhost:3000/api/game?gameId=${params.gameId}`)
-    console.log('Founded Games: ', games.data)
-  } catch (error) {
-    console.log('Error: ', error)
-  }
+  // $ SERVER COMPONENT .... I DONT NEED CREATE AN API TO CONSUME DATA, I CAN USE THE NEXTJS SERVER COMPONENT TO FETCH DATA DIRECTLY FROM THE SERVER
+  // * I WILL BE ABLE TO CALL DATABASE QUERIES DIRECTLY FROM THE SERVER COMPONENT (BEST PRACTICE CREATE A FUNCTION IN OTHER DIRECTORY AND IMPORT IT HERE)
 
-  return (
-    <>
-      <div>{params.gameId}</div>
-      {/*
-        games && games.data.questions.map((question: any) => (
-          <div key={question.id}>
-            <h1>{question.question}</h1>
-            <ul>
-              {question.choices.map((choice: any) => (
-                <li key={choice.id}>{choice.option}</li>
-              ))}
-            </ul>
-          </div>
-        ))
-      */ }
-    </>
-  )
+  //console.log(params.gameId);
+  const game = await getGame(params.gameId)
+
+  if (!game || game.gameType !== 'mcq') return redirect('/quiz')
+  return <Mcq game={game} />
+
 }
 
 export default McqPage
+
+// TODO Gist to verify the data from the database.
+{/*
+  JSON.stringify(game, null, 2).split('\n').map((line, index) => (
+  <p key={index}>{line}</p>
+  ))
+*/}
