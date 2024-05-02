@@ -10,7 +10,8 @@ export async function getGame(gameId: string) {
     const questions = await Question.find({ gameId }, { "gameId": 0 })
     if (!questions) return null
     game.questions = questions
-    return game
+    const gameParsed = JSON.parse(JSON.stringify(game))
+    return gameParsed
   } catch (error) {
     console.log(error)
     return error
