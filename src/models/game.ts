@@ -25,10 +25,11 @@ const gameSchema = new Schema({
     type: String,
     required: true,
   },
+  /*
   questions: [{
     type: Schema.Types.ObjectId,
     ref: 'Question',
-  }],
+  }],*/
 });
 
 const Game = models.Game || model('Game', gameSchema);
