@@ -1,15 +1,16 @@
-
 'use client'
 import McqCounter from "./McqCounter";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { BarChart, ChevronRight, Loader2, Timer } from "lucide-react";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button, buttonVariants } from "./ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { checkAnswerSchema } from "@/schemas/form/quiz.schema";
 import { POST } from "@/services/axios";
 import { useToast } from "./ui/use-toast";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export type Question = {
   _id: string,
@@ -19,6 +20,7 @@ export type Question = {
 }
 
 export type Game = {
+  _id: string,
   topic: string,
   gameType: string,
   questions: Question[]
@@ -45,7 +47,6 @@ const Mcq = ({ game }: Props) => {
       return JSON.parse(currentQuestion.options) // as string) as string[]
     }, [currentQuestion])
   */
-
   const checkAnswer = async () => {
     const payload: z.infer<typeof checkAnswerSchema> = {
       questionId: currentQuestion._id,
@@ -60,23 +61,30 @@ const Mcq = ({ game }: Props) => {
   })
 
   const handleNext = React.useCallback(() => {
+    if (checkAnswerMutation.isPending) return
     checkAnswerMutation.mutate(undefined, {
       onSuccess: ({ isCorrect }) => {
         if (isCorrect) {
           toast({
             title: 'Correct!',
+            description: 'Correct Answer',
             variant: 'success'
           })
-          setCorrectAnswers(questionIndex + 1) // ? Two different ways to update the state.
+          // setCorrectAnswers(questionIndex + 1) // * This way works only with the current state. Will sum 1 to the current state.
+          setCorrectAnswers((prev) => prev + 1) // * This way only works with the previous state. Will sum 1 to the previous state.
         }
         else {
           toast({
             title: 'Wrong!',
+            description: 'Wrong Answer',
             variant: 'destructive'
           })
-          setWrongAnswers((prev) => prev + 1) // ? Two different ways to update the state.
+          setWrongAnswers((prev) => prev + 1)
         }
-        if (questionIndex === game.questions.length - 1) setHasEnded(true)
+        if (questionIndex === game.questions.length - 1) {
+          setHasEnded(true)
+          return;
+        }
         setQuestionIndex((prev) => prev + 1)
       }
     })
@@ -89,9 +97,9 @@ const Mcq = ({ game }: Props) => {
       } else if (e.key == '2') {
         setSelectedChoice(1)
       } else if (e.key == '3') {
-        setSelectedChoice(1)
+        setSelectedChoice(2)
       } else if (e.key == '4') {
-        setSelectedChoice(1)
+        setSelectedChoice(3)
       } else if (e.key == 'Enter') {
         handleNext()
       }
@@ -101,6 +109,20 @@ const Mcq = ({ game }: Props) => {
       document.removeEventListener('keydown', handleKeyDown)
     }
   }, [handleNext])
+
+  if (hasEnded) {
+    return (
+      <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[50vw] max-w-2xl w-[70vw] top-1/2 left-1/2">
+        <div className="text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+          You completed in {'3min 4seg'}
+        </div>
+        <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 w-full')}>
+          View Statistics
+          <BarChart className="w-6 h-4 ml-2" />
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
@@ -118,7 +140,7 @@ const Mcq = ({ game }: Props) => {
             <span>00:00</span>
           </div>
         </div>
-        <McqCounter correctAnswers={0} wrongAnswers={0} />
+        <McqCounter correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
       </div>
       <Card className="w-full mt-4">
         <CardHeader className="flex flex-row items-center" >
@@ -156,7 +178,7 @@ const Mcq = ({ game }: Props) => {
         <Button
           disabled={checkAnswerMutation.isPending}
           className="mt-2"
-          onClick={() => questionIndex < game.questions.length - 1 ? setQuestionIndex(questionIndex + 1) : <p>There was an error.</p>}
+          onClick={() => handleNext()}
         >
           {checkAnswerMutation.isPending && <Loader2 className="m-4 h-4 mr-2 animated-spin" />}
           Next <ChevronRight className="m-4 h-4 ml-2" />

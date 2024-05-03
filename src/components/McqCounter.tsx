@@ -9,6 +9,8 @@ type Props = {
 }
 
 const McqCounter = ({ correctAnswers, wrongAnswers }: Props) => {
+  console.log("correct: ", correctAnswers)
+  console.log("wrong: ", wrongAnswers)
   return (
     <Card className="flex items-center justify-center p-1">
       <CheckCircle2 color='green' size={30} />

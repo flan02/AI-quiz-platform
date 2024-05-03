@@ -3,7 +3,7 @@ import { checkAnswerSchema } from "@/schemas/form/quiz.schema";
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-export async function POSt(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     const body = await req.json()
     const { questionId, userAnswer } = checkAnswerSchema.parse(body)
