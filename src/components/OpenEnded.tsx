@@ -1,17 +1,17 @@
 'use client'
-import McqCounter from "./McqCounter";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { cn, formatTimeDelta } from "@/lib/utils";
+import { differenceInSeconds } from "date-fns";
 import { BarChart, ChevronRight, Loader2, Timer } from "lucide-react";
-import React from "react";
 import { Button, buttonVariants } from "./ui/button";
-import { useMutation } from "@tanstack/react-query";
+import React from "react";
+import { useToast } from "./ui/use-toast";
 import { z } from "zod";
 import { checkAnswerSchema } from "@/schemas/form/quiz.schema";
 import { POST } from "@/services/axios";
-import { useToast } from "./ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import BlankAnswerInput from "./BlankAnswerInput";
 import Link from "next/link";
-import { cn, formatTimeDelta } from "@/lib/utils";
-import { differenceInSeconds } from "date-fns";
 
 export type Question = {
   _id: string,
@@ -32,28 +32,27 @@ type Props = {
   game: Game  // ? I should define an interface for this object.
 }
 
-const Mcq = ({ game }: Props) => {
-  //console.log(game);
+const BLANKS = '_____'
+
+const OpenEnded = ({ game }: Props) => {
   const [questionIndex, setQuestionIndex] = React.useState<number>(0)
-  const [selectedChoice, setSelectedChoice] = React.useState<number>(0)
-  const [correctAnswers, setCorrectAnswers] = React.useState<number>(0)
-  const [wrongAnswers, setWrongAnswers] = React.useState<number>(0)
+  const [blankAnswer, setBlankAnswer] = React.useState<string>('')
   const [hasEnded, setHasEnded] = React.useState<boolean>(false)
   const [now, setNow] = React.useState<Date>(new Date())
   const { toast } = useToast()
   const currentQuestion = React.useMemo(() => {
     return game.questions[questionIndex]
   }, [game.questions, questionIndex])
-  /*
-    const opts = React.useMemo(() => {
-      if (!currentQuestion || !currentQuestion.options) return []
-      return JSON.parse(currentQuestion.options) // as string) as string[]
-    }, [currentQuestion])
-  */
+
   const checkAnswer = async () => {
+    let filledAnswer = blankAnswer
+    document.querySelectorAll<HTMLInputElement>('#user-blank-input').forEach((input) => {
+      filledAnswer = filledAnswer.replace(BLANKS, input.value)
+      input.value = ''
+    })
     const payload: z.infer<typeof checkAnswerSchema> = {
       questionId: currentQuestion._id,
-      userAnswer: currentQuestion.options[selectedChoice]
+      userAnswer: filledAnswer
     }
     const response = await POST('/checkAnswer', payload)
     return response
@@ -65,47 +64,26 @@ const Mcq = ({ game }: Props) => {
 
   const handleNext = React.useCallback(() => {
     if (checkAnswerMutation.isPending) return
+
     checkAnswerMutation.mutate(undefined, {
-      onSuccess: ({ isCorrect }) => {
-        if (isCorrect) {
-          toast({
-            title: 'Correct!',
-            description: 'Correct Answer',
-            variant: 'success'
-          })
-          // setCorrectAnswers(questionIndex + 1) // * This way works only with the current state. Will sum 1 to the current state.
-          setCorrectAnswers((prev) => prev + 1) // * This way only works with the previous state. Will sum 1 to the previous state.
-        }
-        else {
-          toast({
-            title: 'Wrong!',
-            description: 'Wrong Answer',
-            variant: 'destructive'
-          })
-          setWrongAnswers((prev) => prev + 1)
-        }
+      onSuccess: ({ percentajeCorrect }) => { // ?  NextResponse.json({ percentageSimilar }, { status: 200 })
+        console.log("Percentaje after mutation: ", percentajeCorrect);
+        toast({
+          title: `Your answer is ${percentajeCorrect}% similar to the correct answer.`,
+          description: 'answers are matched based on similarity comparisons',
+        });
         if (questionIndex === game.questions.length - 1) {
           setHasEnded(true)
-          return;
+          return
         }
         setQuestionIndex((prev) => prev + 1)
       }
     })
-  }, [checkAnswerMutation, questionIndex, game.questions.length, toast])
+  }, [checkAnswerMutation, toast, questionIndex, game.questions.length])
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key == '1') {
-        setSelectedChoice(0)
-      } else if (e.key == '2') {
-        setSelectedChoice(1)
-      } else if (e.key == '3') {
-        setSelectedChoice(2)
-      } else if (e.key == '4') {
-        setSelectedChoice(3)
-      } else if (e.key == 'Enter') {
-        handleNext()
-      }
+      if (e.key == 'Enter') handleNext()
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => {
@@ -133,9 +111,7 @@ const Mcq = ({ game }: Props) => {
       </div>
     )
   }
-
-
-
+  //console.log(currentQuestion.answer);
   return (
     <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
       <div className="flex flex-row justify-between">
@@ -152,7 +128,7 @@ const Mcq = ({ game }: Props) => {
             {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
           </div>
         </div>
-        <McqCounter correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />
+
       </div>
       <Card className="w-full mt-4">
         <CardHeader className="flex flex-row items-center" >
@@ -169,27 +145,12 @@ const Mcq = ({ game }: Props) => {
           </CardDescription>
         </CardHeader>
       </Card>
+
       <div className="flex flex-col items-center justify-center w-full mt-4" >
-        {
-          currentQuestion.options.map((option, index) => {
-            return (
-              <Button
-                variant={selectedChoice === index ? 'default' : 'secondary'}
-                onClick={() => setSelectedChoice(index)}
-                key={index} className="justify-start w-full py-8 mb-4">
-                <div className="flex items-center justify-start">
-                  <div className="p-2 px-3 mr-5 border rounded-md">
-                    {index + 1}
-                  </div>
-                  <div className="text-start">{option}</div>
-                </div>
-              </Button>
-            )
-          })
-        }
+        <BlankAnswerInput answer={currentQuestion.answer} setBlankAnswer={setBlankAnswer} />
         <Button
           disabled={checkAnswerMutation.isPending}
-          className="mt-2"
+          className="mt-6"
           onClick={() => handleNext()}
         >
           {checkAnswerMutation.isPending && <Loader2 className="m-4 h-4 mr-2 animated-spin" />}
@@ -200,5 +161,10 @@ const Mcq = ({ game }: Props) => {
   )
 }
 
+export default OpenEnded
 
-export default Mcq
+{/*
+  JSON.stringify(game, null, 2).split('\n').map((line, index) => (
+  <p key={index}>{line}</p>
+  ))
+*/}
