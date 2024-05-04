@@ -1,5 +1,5 @@
 import { Schema, model, models } from 'mongoose'
-import { GameType } from "@/enum/index"
+//import { GameType } from "@/enum/index"
 
 
 const gameSchema = new Schema({
@@ -24,6 +24,14 @@ const gameSchema = new Schema({
   gameType: {
     type: String,
     required: true,
+  },
+  timeStarted: {
+    type: Date,
+    default: Date.now(),
+  },
+  timeEnded: {
+    type: Date,
+    optional: true,
   },
   questions: [{
     type: Schema.Types.ObjectId,

@@ -8,3 +8,13 @@ $ npm install lucide-react
 
 #  Paste bin
 [paste bin](https://pastebin.com/)
+
+# Mantine
+[mantine](https://mantine.dev/)
+[ui mantine](https://ui.mantine.dev/)
+
+# Story set
+
+**Customize, animate and download our illustrations to make incredible landing pages, app or presentations!**
+
+[website](https://storyset.com/)

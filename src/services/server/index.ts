@@ -16,5 +16,16 @@ export async function getGame(gameId: string) {
     console.log(error)
     return error
   }
+}
 
+export async function getAllGames(userId: string, limit: number = 10) {
+  try {
+    connectDB()
+    const games = await Game.find({ userId }).limit(limit).sort({ timeStarted: -1 })
+    const gamesParsed = JSON.parse(JSON.stringify(games))
+    return gamesParsed
+  } catch (error) {
+    console.log(error)
+    return error
+  }
 }

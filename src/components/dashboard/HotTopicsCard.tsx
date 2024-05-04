@@ -1,4 +1,5 @@
-'use client'  // ! It could be 'use server' by default. Pay attention to console errors
+//'use client'  // ! It could be 'use server' by default. Pay attention to console errors
+import { connectDB } from "@/lib/mongodb"
 import CustomWordCloud from "../CustomWordCloud"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 
@@ -6,6 +7,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 type Props = {}
 
 const HotTopicsCard = (props: Props) => {
+
+  // const topics = await connectDB()
+
   return (
     <Card className="col-span-4">
       <CardHeader>
