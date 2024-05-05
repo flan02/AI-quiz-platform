@@ -16,18 +16,20 @@ import React from "react"
 import LoadingQuestions from "../LoadingQuestions"
 
 
-type Props = {}
+type Props = {
+  topicParam: string
+}
 
 type Input = z.infer<typeof quizSchema>
 
-const QuizCreation = (props: Props) => {
+const QuizCreation = ({ topicParam }: Props) => {
   const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [finished, setFinished] = React.useState<boolean>(false)
   const form = useForm<Input>({
     resolver: zodResolver(quizSchema),
     defaultValues: {
-      topic: '',
+      topic: topicParam,
       type: 'open_ended',
       amount: 5
     }

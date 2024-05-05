@@ -18,3 +18,8 @@ $ npm install lucide-react
 **Customize, animate and download our illustrations to make incredible landing pages, app or presentations!**
 
 [website](https://storyset.com/)
+
+# TS to Python
+
+[ts to python](https://ts2py.dev/)
+[ts to python](https://www.docuwriter.ai/typescript-to-python-code-converter)
