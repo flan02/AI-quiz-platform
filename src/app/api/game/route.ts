@@ -7,6 +7,7 @@ import { type_mcqQuestion, type_openEnded } from "@/types";
 import Game from "@/models/game";
 import Question from "@/models/question";
 import { connectDB } from "@/lib/mongodb";
+import Topic from "@/models/topic";
 
 
 
@@ -33,8 +34,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     const newGame = await Game.create(game)
 
-    //console.log('Game created: ', newGame);
-    // return NextResponse.json({ message: 'Quiz created successfully', newGame: newGame }, { status: 200 });
+    const filter = { topic: topic }
+    const update = { $inc: { count: 10 }, $setOnInsert: { topic: topic } }
+    const opts = { upsert: true, new: true, setDefaultsOnInsert: true }
+    const topicAdded = await Topic.findOneAndUpdate(filter, update, opts)
+    console.log('New topic added :', topicAdded);
 
     // * This call will generate the questions for us.
     //console.log('API endpoint', process.env.API_URL);
@@ -43,6 +47,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
       topic,
       type
     })
+
+
+
+
 
     //console.log(response.data);
 

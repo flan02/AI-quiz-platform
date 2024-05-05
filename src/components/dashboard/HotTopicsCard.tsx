@@ -1,14 +1,24 @@
 //'use client'  // ! It could be 'use server' by default. Pay attention to console errors
-import { connectDB } from "@/lib/mongodb"
+
 import CustomWordCloud from "../CustomWordCloud"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
+import { getTopics } from "@/services/server"
 
-
+type Topic = {
+  topic: string,
+  count: number
+}
 type Props = {}
 
-const HotTopicsCard = (props: Props) => {
+const HotTopicsCard = async (props: Props) => {
 
-  // const topics = await connectDB()
+  const topics = await getTopics() as Topic[];
+  const formattedTopics = topics.map((topic: Topic) => {
+    return {
+      text: topic.topic,
+      value: topic.count
+    }
+  })
 
   return (
     <Card className="col-span-4">
@@ -17,7 +27,7 @@ const HotTopicsCard = (props: Props) => {
         <CardDescription>Click on a topic to start a quiz on it!</CardDescription>
       </CardHeader>
       <CardContent className="pl-2">
-        <CustomWordCloud />
+        <CustomWordCloud formattedTopics={formattedTopics} />
 
       </CardContent>
     </Card>
