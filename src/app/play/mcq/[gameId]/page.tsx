@@ -14,7 +14,7 @@ type Props = {
 const McqPage = async ({ params }: Props) => {
   const session = await getAuthSession()
   if (!session?.user) return redirect('/')
-
+  //console.log('identifying the game: ', params.gameId)
   const game = await getGame(params.gameId)
   if (!game || game.gameType !== 'mcq') return redirect('/quiz')
   return <Mcq game={game} />
