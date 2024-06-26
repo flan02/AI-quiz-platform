@@ -23,3 +23,6 @@ $ npm install lucide-react
 
 [ts to python](https://ts2py.dev/)
 [ts to python](https://www.docuwriter.ai/typescript-to-python-code-converter)
+
+### openai api
+offer us 3 months of free callings to open ai.
