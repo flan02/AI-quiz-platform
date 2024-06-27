@@ -9,8 +9,8 @@ import React from "react";
 type Props = {}
 
 export const metadata = {
-  title: 'Dashboard | Quiz AI',
-  description: 'Main page created by Dan Chanivet',
+  title: 'Dashboard | Triviathon',
+  description: 'An open-source platform developed with help of OpenAI API developed by Dan Chanivet',
 
 }
 
