@@ -14,11 +14,11 @@ const Navbar = async (props: Props) => {
   //{JSON.stringify(session?.user, null, 2)}
 
   return (
-    <nav className="fixed inset-x-0 top-0 bgl dark:bgd z-[10] h-fix border-b border-zinc-300 py-2">
+    <nav className="bgl dark:bgd z-[10] border-b border-zinc-300 py-2">
       <div className="flex items-center justify-between gap-2 px-8 mx-auto max-w-7xl">
 
         <div className="flex items-center">
-          <ThemeToggle className="mr-4 " />
+          <ThemeToggle className="mr-4" />
           <div className="flex items-center">
             {
               session?.user

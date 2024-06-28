@@ -12,19 +12,21 @@ export default async function Home() {
 
   return (
     <main>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Card className="w-[400px]">
+      <div className="h-[90vh] flex items-center justify-center">
+        <Card className="w-[500px] h-[250px] space-y-4">
           <CardHeader>
-            <CardTitle>Welcome to Quiz AI</CardTitle>
+            <CardTitle className="text-xl">Be brave and face our Triviathon AI site</CardTitle>
             <CardDescription>
-              Quiz AI is a quiz application that uses AI to generate questions and answers.
-              It is a work in progress and is being developed by:
+              &nbsp; Triviathon AI is an application that uses AI to generate questions and answers.
+              <br />
+              &nbsp; This app is being developed by Dan Chanivet:
 
             </CardDescription>
-            <a className="text-blue-700 underline" href="https://www.chanivetdan.tech" target="_blank"> author website </a>
+
+            <a className="text-blue-500 hover:text-blue-700 underline" href="https://www.chanivetdan.tech" target="_blank">triviathon creator </a>
           </CardHeader>
-          <CardContent>
-            <SignInButton text="Sign In with Google" />
+          <CardContent className="text-center">
+            <SignInButton text="Sign in with Google" />
           </CardContent>
         </Card>
       </div>

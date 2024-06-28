@@ -11,8 +11,8 @@ type Props = {
 }
 
 export const metadata = {
-  title: "Quiz page | Quiz AI",
-  description: "created by Dan Chanivet",
+  title: "Type trivia page | Triviathon",
+  description: "developed by Dan Chanivet",
 }
 
 const Quizpage = async ({ searchParams }: Props) => {

@@ -72,10 +72,10 @@ const QuizCreation = ({ topicParam }: Props) => {
   if (isLoading) return <LoadingQuestions finished={finished} />
 
   return (
-    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <main className="h-[90vh] flex items-center justify-center">
       <Card>
         <CardHeader>
-          <CardTitle className="font-bold text-2xl">Quiz Creation</CardTitle>
+          <CardTitle className="font-bold text-2xl">Trivia request menu</CardTitle>
           <CardDescription>Choose a topic</CardDescription>
         </CardHeader>
         <CardContent>
@@ -137,8 +137,7 @@ const QuizCreation = ({ topicParam }: Props) => {
           </Form>
         </CardContent>
       </Card>
-
-    </div>
+    </main>
   )
 }
 

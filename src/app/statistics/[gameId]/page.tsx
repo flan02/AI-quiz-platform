@@ -56,7 +56,7 @@ const StatisticsPage = async ({ params }: Props) => {
 
   return (
     <>
-      <div className="p-8 mx-auto max-w-7xl">
+      <div className="p-8 mx-auto max-w-7xl lg:mb-12">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Summary</h2>
           <div className="flex items-center space-x-2">

@@ -5,7 +5,7 @@ type Props = {}
 
 const RecentActivities = (props: Props) => {
   return (
-    <Card className="col-span-4 lg:col-span-4">
+    <Card className="col-span-4 lg:col-span-1">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Recent Activities</CardTitle>
         <CardDescription>

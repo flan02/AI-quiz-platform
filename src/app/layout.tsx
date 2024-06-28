@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Providers from "@/components/Providers";
 import { Toaster } from "@/components/ui/toaster";
+import Footer from "@/components/Footer";
 
 const authors = [{
   name: "Dan Chanivet",
@@ -22,8 +23,8 @@ const authors = [{
 const lexend = Lexend({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Quiz AI",
-  description: "Amazing quiz app developed with Nextjs",
+  title: "Triviathon AI",
+  description: "Amazing app developed with OpenAI that challenges your knowledge!",
   authors: authors
 };
 
@@ -36,12 +37,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={cn(
         lexend.className,
-        'antialiased min-h-screen pt-16'
+        'antialiased '
       )}>
         <Providers>
           <Navbar />
           {children}
           <Toaster />
+          <Footer />
         </Providers>
       </body>
     </html>
