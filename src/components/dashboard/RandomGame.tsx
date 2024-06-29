@@ -3,14 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 
 type Props = {}
 
-const RecentActivities = (props: Props) => {
+const RandomGame = (props: Props) => {
   return (
     <Card className="col-span-4 lg:col-span-1 h-max">
       <CardHeader>
-        <CardTitle className="text-2xl font-bold">Recent Activities</CardTitle>
+        <CardTitle className="text-2xl font-bold">Fast TriviaAI Challenge</CardTitle>
         <CardDescription>
-          {/* Total amount of games will come from database */}
-          You have player a total of 7 games.
+          Try a random previous triviathon game already played.
         </CardDescription>
       </CardHeader>
       <CardContent className="max-h-[580px] overflow-scroll-hidden">
@@ -20,4 +19,4 @@ const RecentActivities = (props: Props) => {
   )
 }
 
-export default RecentActivities
+export default RandomGame

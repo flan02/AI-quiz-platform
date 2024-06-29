@@ -6,6 +6,7 @@ import McqCounter from "./McqCounter";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import { getAllGames, getGame } from "@/services/server";
+import { getTime } from "date-fns";
 
 type Props = {
   limit: number;
@@ -16,6 +17,8 @@ type Game = {
   _id: string;
   topic: string;
   timeStarted: Date;
+  createdAt: Date;
+  iat: Date;
   gameType: string;
 };
 
@@ -24,11 +27,14 @@ const HistoryComponent = async ({ limit, userId }: Props) => {
   if (!session?.user) return redirect('/')
 
   const games = await getAllGames(session.user.id, limit)
+  const orderedGames = games.sort((a: Game, b: Game) => {
+    return getTime(b.createdAt ?? b.iat) - getTime(a.createdAt ?? a.iat)
+  })
 
   return (
     <div className="space-y-8">
       {
-        games.map((game: Game, index: number) => {
+        orderedGames.map((game: Game, index: number) => {
           return (
             <div className="flex items-center justify-between" key={index}>
               <div className="flex items-center">
@@ -46,7 +52,7 @@ const HistoryComponent = async ({ limit, userId }: Props) => {
                   </Link>
                   <p className="flex items-center px-2 py-1 text-xs text-white rounded-lg w-fit bg-slate-800">
                     <Clock className="w-4 h-4 mr-1" />
-                    {new Date(game.timeStarted ?? 0).toLocaleDateString()}
+                    {new Date(game.createdAt ?? game.iat).toLocaleString()}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {game.gameType === "mcq" ? "Multiple Choice" : "Open-Ended"}
@@ -56,6 +62,7 @@ const HistoryComponent = async ({ limit, userId }: Props) => {
             </div>
           );
         })}
+
     </div>
   );
 };

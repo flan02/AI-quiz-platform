@@ -15,21 +15,26 @@ const Historypage = async (props: Props) => {
   const session = await getAuthSession()
   if (!session?.user) return redirect('/')
   return (
-    <div className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 w-[600px]">
-      <Card>
+    <div className="h-[90vh] flex flex-col items-center justify-center mx-auto min-w-[350px] px-2 lg:px-0 md:w-[600px] lg:w-[750px]">
+      <Card className="w-full border">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl font-bold">History</CardTitle>
+
+            <CardTitle className="text-2xl lg:text-4xl font-bold">History </CardTitle>
+
+
             <Link className={buttonVariants()} href="/dashboard">
               <LucideLayoutDashboard className="mr-2" />
               Back to Dashboard
             </Link>
           </div>
         </CardHeader>
-        <CardContent className="max-h-[60vh] overflow-scroll">
+        <CardContent className="max-h-[60vh] overflow-scroll overflow-x-hidden">
           <History limit={100} userId={session.user.id} />
+
         </CardContent>
       </Card>
+      <span className="text-sm md:text-lg lg:text-2xl mt-4">last 100 games</span>
     </div>
   );
 }

@@ -75,7 +75,7 @@
     }
 
     .bgl {
-      @apply bg-teal-50;
+      @apply bg-white;
     }
     .bgd {
       @apply bg-slate-950;

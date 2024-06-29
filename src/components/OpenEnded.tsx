@@ -100,11 +100,11 @@ const OpenEnded = ({ game }: Props) => {
 
   if (hasEnded) {
     return (
-      <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[50vw] max-w-2xl w-[70vw] top-1/2 left-1/2">
-        <div className="text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+      <div className="flex flex-col items-center justify-center mx-auto h-[90vh] md:w-[50vw] max-w-2xl w-[70vw]">
+        <div className="min-w-[350px] text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
           You completed in {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
         </div>
-        <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 w-full')}>
+        <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 min-w-[350px]')}>
           View Statistics
           <BarChart className="w-6 h-4 ml-2" />
         </Link>
@@ -113,8 +113,8 @@ const OpenEnded = ({ game }: Props) => {
   }
   //console.log(currentQuestion.answer);
   return (
-    <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[80vw] max-w-4xl w-[90vw] top-1/2 left-1/2">
-      <div className="flex flex-row justify-between">
+    <div className="flex flex-col mx-auto items-center justify-center h-[90vh] md:w-[80vw] max-w-4xl w-[90vw]">
+      <div className="flex flex-row justify-between w-full">
         <div className="flex flex-col">
           {/* topic */}
           <p>

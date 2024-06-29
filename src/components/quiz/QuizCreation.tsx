@@ -75,7 +75,7 @@ const QuizCreation = ({ topicParam }: Props) => {
     <main className="h-[90vh] flex items-center justify-center">
       <Card>
         <CardHeader>
-          <CardTitle className="font-bold text-2xl">Trivia request menu</CardTitle>
+          <CardTitle className="font-bold md:text-2xl text-xl">Choose your game to TriviathonAI</CardTitle>
           <CardDescription>Choose a topic</CardDescription>
         </CardHeader>
         <CardContent>
@@ -88,7 +88,7 @@ const QuizCreation = ({ topicParam }: Props) => {
                   <FormItem>
                     <FormLabel>Topic</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter a topic..." {...field} />
+                      <Input autoComplete="off" placeholder="Enter a topic..." {...field} />
                     </FormControl>
                     <FormDescription>
                       Please provide a topic.

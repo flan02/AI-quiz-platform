@@ -42,7 +42,7 @@ const LoadingQuestions = ({ finished }: Props) => {
     <div className="flex flex-col items-center justify-center h-[80vh] w-[90vw] md:w-[80vw] lg:max-w-7xl mx-auto pt-8 mt-[10vh]">
       <Image src={"/loading.gif"} width={400} height={400} alt="loading" />
       <Progress value={progress} className="w-full mt-4" />
-      <h1 className="mt-2 text-xl">{loadingText}</h1>
+      <h1 className="mt-2 text-sm lg:text-xl">{loadingText}</h1>
     </div>
   );
 };

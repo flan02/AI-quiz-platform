@@ -28,7 +28,7 @@ const DetailsDialog = (props: Props) => {
           <DialogTitle className="text-2xl">Triviathon powered with OpenAI</DialogTitle>
           <DialogDescription>
             {<div className="flex items-center gap-3 my-2">
-              <p className="flex items-center">
+              <p className="flex items-center hover:text-red-500">
                 <Github className="w-5 h-5" />
                 <Link
                   className="ml-1 underline"
@@ -38,7 +38,7 @@ const DetailsDialog = (props: Props) => {
                   GitHub
                 </Link>
               </p>
-              <p className="flex items-center">
+              <p className="flex items-center hover:text-red-500">
                 <Youtube className="w-5 h-5" />
                 <Link
                   className="ml-1 underline"
@@ -66,7 +66,7 @@ const DetailsDialog = (props: Props) => {
                     width={35}
                     height={35}
                   />
-                  <span className="">Shadcn</span>
+                  <span className="hover:text-amber-200">Shadcn</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Image
@@ -75,7 +75,7 @@ const DetailsDialog = (props: Props) => {
                     width={35}
                     height={35}
                   />
-                  <span className="">Next.js</span>
+                  <span className="hover:text-amber-200">Next.js</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Image
@@ -84,7 +84,7 @@ const DetailsDialog = (props: Props) => {
                     width={35}
                     height={35}
                   />
-                  <span className="">Tailwind</span>
+                  <span className="hover:text-amber-200">Tailwind</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Image
@@ -93,7 +93,7 @@ const DetailsDialog = (props: Props) => {
                     width={30}
                     height={30}
                   />
-                  <span className="">NextAuth</span>
+                  <span className="hover:text-amber-200">NextAuth</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Image
@@ -102,7 +102,7 @@ const DetailsDialog = (props: Props) => {
                     width={30}
                     height={30}
                   />
-                  <span className="">OpenAI</span>
+                  <span className="hover:text-amber-200">OpenAI</span>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ const DetailsDialog = (props: Props) => {
                     width={30}
                     height={30}
                   />
-                  <span className="">React Query</span>
+                  <span className="hover:text-amber-200">React Query</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Image
@@ -121,7 +121,7 @@ const DetailsDialog = (props: Props) => {
                     width={30}
                     height={30}
                   />
-                  <span className="">MongoDB</span>
+                  <span className="hover:text-amber-200">MongoDB</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Image
@@ -130,7 +130,7 @@ const DetailsDialog = (props: Props) => {
                     width={30}
                     height={30}
                   />
-                  <span className="">TypeScript</span>
+                  <span className="hover:text-amber-200">TypeScript</span>
                 </div>
               </div>
             </p>

@@ -37,6 +37,8 @@ const gameSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Question',
   }],
+}, {
+  timestamps: true,
 });
 
 const Game = models.Game || model('Game', gameSchema);

@@ -37,14 +37,10 @@ const questionSchema = new Schema({
     type: String,
     optional: true
   }
+}, {
+  timestamps: true,
 });
 
 const Question = models.Question || model('Question', questionSchema);
 
 export default Question;
-
-/* 
-options:
-// type: Schema.Types.Mixed, // JSON format
-    // default: {},
-*/

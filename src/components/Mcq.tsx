@@ -25,6 +25,7 @@ export type Game = {
   topic: string,
   gameType: string,
   timeStarted: Date,
+  createdAt: Date,
   questions: Question[]
 }
 
@@ -122,11 +123,12 @@ const Mcq = ({ game }: Props) => {
 
   if (hasEnded) {
     return (
-      <div className="absolute -translate-x-1/2 -translate-y-1/2 md:w-[50vw] max-w-2xl w-[70vw] top-1/2 left-1/2">
-        <div className="text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
-          You completed in {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+      <div className="h-[90vh] flex flex-col items-center justify-center lg:w-full md:w-[50vw] max-w-2xl w-[70vw] mx-auto">
+        <h1 className="text-xl">TriviaAI ended 🎀</h1>
+        <div className="min-w-[350px] text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
+          You completed in {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
         </div>
-        <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 w-full')}>
+        <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 min-w-[350px]')}>
           View Statistics
           <BarChart className="w-6 h-4 ml-2" />
         </Link>
@@ -149,7 +151,7 @@ const Mcq = ({ game }: Props) => {
           </p>
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
-            {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+            {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
           </div>
         </div>
         <McqCounter correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />

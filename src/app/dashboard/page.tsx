@@ -1,6 +1,7 @@
 import HistoryCard from "@/components/dashboard/HistoryCard"
 import HotTopicsCard from "@/components/dashboard/HotTopicsCard"
 import QuizCard from "@/components/dashboard/QuizCard"
+import RandomGame from "@/components/dashboard/RandomGame"
 import RecentActivities from "@/components/dashboard/RecentActivities"
 import DetailsDialog from "@/components/DetailsDialog"
 import { getAuthSession } from "@/lib/nextauth"
@@ -21,7 +22,7 @@ const Dashboardpage = async (props: Props) => {
   if (!session?.user) return redirect('/')
   return (
     <main>
-      <div className="px-1 py-8 mx-auto max-w-7xl ">
+      <div className="px-1 py-8 mx-auto max-w-7xl lg:h-[90vh]">
         <div className="flex items-center">
           <h2 className="mr-4 text-3xl font-bold tracking-tight">Dashboard</h2>
           <DetailsDialog />
@@ -32,7 +33,10 @@ const Dashboardpage = async (props: Props) => {
         </div>
         <div className="grid gap-4 mt-4 md:grid-cols-2">
           <HotTopicsCard />
-          <RecentActivities />
+          <div>
+            <RandomGame />
+            <RecentActivities />
+          </div>
         </div>
       </div>
     </main>
