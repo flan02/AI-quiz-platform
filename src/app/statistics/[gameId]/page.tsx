@@ -71,7 +71,7 @@ const StatisticsPage = async ({ params }: Props) => {
           <ResultsCard accuracy={accuracy} />
           <AccuracyCard accuracy={accuracy} />
           <TimeTakenCard
-            timeEnded={new Date(game.timeEnded ?? 0)}
+            timeEnded={new Date(game.timeEnded)} /* HERE I NEED THE TIMEENDED VALUE FROM DATABASE */
             timeStarted={new Date(game.createdAt ?? 0)}
           />
         </div>

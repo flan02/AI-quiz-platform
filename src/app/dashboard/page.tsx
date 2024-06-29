@@ -22,7 +22,7 @@ const Dashboardpage = async (props: Props) => {
   if (!session?.user) return redirect('/')
   return (
     <main>
-      <div className="px-1 py-8 mx-auto max-w-7xl lg:h-[90vh]">
+      <div className="px-1 py-8 mx-auto max-w-7xl lg:h-screen">
         <div className="flex items-center">
           <h2 className="mr-4 text-3xl font-bold tracking-tight">Dashboard</h2>
           <DetailsDialog />
@@ -31,9 +31,9 @@ const Dashboardpage = async (props: Props) => {
           <QuizCard />
           <HistoryCard />
         </div>
-        <div className="grid gap-4 mt-4 md:grid-cols-2">
+        <div className="grid gap-4 mt-4 md:grid-cols-1 lg:grid-cols-2 md:mx-0 sm:mx-8 mx-0">
           <HotTopicsCard />
-          <div>
+          <div className="space-y-4 col-span-4 md:col-span-1">
             <RandomGame />
             <RecentActivities />
           </div>

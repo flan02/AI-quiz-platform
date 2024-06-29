@@ -3,6 +3,7 @@ import { quizSchema } from "@/schemas/form/quiz.schema";
 import { ZodError } from "zod";
 import { strict_output } from "@/lib/gpt";
 import { getAuthSession } from "@/lib/nextauth";
+import { validateAndSanitize } from "@/lib/utils";
 
 
 // TODO: POSTMAN 
@@ -37,6 +38,9 @@ export const POST = async (req: Request, res: Response) => {
         }
       );
     }
+
+    // questions.question = JSON.stringify(questions.question, null, 2);
+    questions.question = validateAndSanitize(questions.question);
     return NextResponse.json({ questions }, { status: 200 });
   } catch (error) {
     if (error instanceof ZodError) {

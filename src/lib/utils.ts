@@ -16,3 +16,25 @@ export function formatTimeDelta(seconds: number) {
   if (secs > 0) parts.push(`${secs}s`)
   return parts.join(' ')
 }
+
+function sanitizeString(value: string): string {
+  return value.replace(/"/g, '\\"');
+}
+
+export function validateAndSanitize(obj: { [key: string]: any }): { [key: string]: string } | null {
+  const sanitizedObj: { [key: string]: string } = {};
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      const value = obj[key];
+      if (typeof value === 'string') {
+        sanitizedObj[key] = sanitizeString(value);
+      } else {
+        console.error(`Validation failed: value of ${key} is not a string.`);
+        return null; // Return null if any value is not a string
+      }
+    }
+  }
+
+  return sanitizedObj;
+}

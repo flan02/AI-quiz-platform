@@ -8,8 +8,7 @@ import Game from "@/models/game";
 import Question from "@/models/question";
 import { connectDB } from "@/lib/mongodb";
 import Topic from "@/models/topic";
-
-
+import { validateAndSanitize } from "@/lib/utils";
 
 export async function POST(req: NextRequest, res: NextResponse) {
 
@@ -48,10 +47,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       type
     })
 
-
-
-
-
     //console.log(response.data);
 
     if (type === 'mcq') {
@@ -67,7 +62,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
         }
       })
 
-      questionData.options = JSON.stringify(questionData.options)
+      // questionData.options = JSON.stringify(questionData.options)
+      questionData.options = validateAndSanitize(questionData.options)
 
       //console.log('Question data before adding: ', questionData);
       await Question.create(questionData)
@@ -102,7 +98,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
   }
 
 }
-
 
 export async function GET(req: NextRequest, res: NextResponse) {
   const data = req.headers

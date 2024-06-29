@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <main>
       <div className="h-[90vh] flex items-center justify-center">
-        <Card className="w-[500px] h-[250px] space-y-4">
+        <Card className="w-[90%] md:w-[500px] h-[250px] space-y-4">
           <CardHeader>
             <CardTitle className="text-xl">Be brave and face our Triviathon AI site</CardTitle>
             <CardDescription>

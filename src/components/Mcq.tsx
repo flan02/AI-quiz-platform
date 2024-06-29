@@ -13,6 +13,7 @@ import Link from "next/link";
 import { cn, formatTimeDelta } from "@/lib/utils";
 import { differenceInSeconds } from "date-fns";
 
+
 export type Question = {
   _id: string,
   question: string,
@@ -25,6 +26,7 @@ export type Game = {
   topic: string,
   gameType: string,
   timeStarted: Date,
+  timeEnded: Date,
   createdAt: Date,
   questions: Question[]
 }
@@ -41,6 +43,7 @@ const Mcq = ({ game }: Props) => {
   const [wrongAnswers, setWrongAnswers] = React.useState<number>(0)
   const [hasEnded, setHasEnded] = React.useState<boolean>(false)
   const [now, setNow] = React.useState<Date>(new Date())
+
   const { toast } = useToast()
   const currentQuestion = React.useMemo(() => {
     return game.questions[questionIndex]
@@ -60,8 +63,20 @@ const Mcq = ({ game }: Props) => {
     return response
   }
 
+  const gameEnded = async (timeEnded: Date) => {
+    const response = await POST('/gameEnded', {
+      gameId: game._id,
+      timeEnded
+    })
+    return response
+  }
+
   const checkAnswerMutation = useMutation({
     mutationFn: checkAnswer
+  })
+
+  const gameEndedMutation = useMutation({
+    mutationFn: gameEnded
   })
 
   const handleNext = React.useCallback(() => {
@@ -86,13 +101,15 @@ const Mcq = ({ game }: Props) => {
           setWrongAnswers((prev) => prev + 1)
         }
         if (questionIndex === game.questions.length - 1) {
+          game.timeEnded = now
+          gameEndedMutation.mutate(game.timeEnded)
           setHasEnded(true)
           return;
         }
         setQuestionIndex((prev) => prev + 1)
       }
     })
-  }, [checkAnswerMutation, questionIndex, game.questions.length, toast])
+  }, [checkAnswerMutation, questionIndex, game, toast, now, gameEndedMutation])
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -118,10 +135,13 @@ const Mcq = ({ game }: Props) => {
     const interval = setInterval(() => {
       if (!hasEnded) { setNow(new Date()) }
     }, 1000)
-    return () => { clearInterval(interval) }
+    return () => {
+      clearInterval(interval)
+    }
   }, [hasEnded])
 
   if (hasEnded) {
+
     return (
       <div className="h-[90vh] flex flex-col items-center justify-center lg:w-full md:w-[50vw] max-w-2xl w-[70vw] mx-auto">
         <h1 className="text-xl">TriviaAI ended 🎀</h1>

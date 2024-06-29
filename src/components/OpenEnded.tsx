@@ -25,6 +25,8 @@ export type Game = {
   topic: string,
   gameType: string,
   timeStarted: Date,
+  timeEnded: Date,
+  createdAt: Date,
   questions: Question[]
 }
 
@@ -62,6 +64,18 @@ const OpenEnded = ({ game }: Props) => {
     mutationFn: checkAnswer
   })
 
+  const gameEnded = async (timeEnded: Date) => {
+    const response = await POST('/gameEnded', {
+      gameId: game._id,
+      timeEnded
+    })
+    return response
+  }
+
+  const gameEndedMutation = useMutation({
+    mutationFn: gameEnded
+  })
+
   const handleNext = React.useCallback(() => {
     if (checkAnswerMutation.isPending) return
 
@@ -73,13 +87,16 @@ const OpenEnded = ({ game }: Props) => {
           description: 'answers are matched based on similarity comparisons',
         });
         if (questionIndex === game.questions.length - 1) {
+          game.timeEnded = now
+          console.log('Open Ended finished in', game.timeEnded);
+          gameEndedMutation.mutate(game.timeEnded)
           setHasEnded(true)
           return
         }
         setQuestionIndex((prev) => prev + 1)
       }
     })
-  }, [checkAnswerMutation, toast, questionIndex, game.questions.length])
+  }, [checkAnswerMutation, toast, questionIndex, game, now, gameEndedMutation])
 
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -99,10 +116,11 @@ const OpenEnded = ({ game }: Props) => {
   }, [hasEnded])
 
   if (hasEnded) {
+
     return (
       <div className="flex flex-col items-center justify-center mx-auto h-[90vh] md:w-[50vw] max-w-2xl w-[70vw]">
         <div className="min-w-[350px] text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
-          You completed in {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+          You completed in {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
         </div>
         <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 min-w-[350px]')}>
           View Statistics
@@ -125,7 +143,7 @@ const OpenEnded = ({ game }: Props) => {
           </p>
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
-            {formatTimeDelta(differenceInSeconds(now, game.timeStarted))}
+            {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
           </div>
         </div>
 

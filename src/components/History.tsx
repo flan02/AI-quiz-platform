@@ -6,7 +6,8 @@ import McqCounter from "./McqCounter";
 import { getAuthSession } from "@/lib/nextauth";
 import { redirect } from "next/navigation";
 import { getAllGames, getGame } from "@/services/server";
-import { getTime } from "date-fns";
+import { differenceInSeconds, getTime } from "date-fns";
+import { formatTimeDelta } from "@/lib/utils";
 
 type Props = {
   limit: number;
@@ -18,6 +19,7 @@ type Game = {
   topic: string;
   timeStarted: Date;
   createdAt: Date;
+  timeEnded: Date;
   iat: Date;
   gameType: string;
 };
@@ -43,7 +45,7 @@ const HistoryComponent = async ({ limit, userId }: Props) => {
                 ) : (
                   <Edit2 className="mr-3" />
                 )}
-                <div className="ml-4 space-y-1">
+                <div className="ml-4 space-y-1 min-w-[350px]">
                   <Link
                     className="text-base font-medium leading-none underline"
                     href={`/statistics/${game._id}`}
@@ -54,9 +56,14 @@ const HistoryComponent = async ({ limit, userId }: Props) => {
                     <Clock className="w-4 h-4 mr-1" />
                     {new Date(game.createdAt ?? game.iat).toLocaleString()}
                   </p>
-                  <p className="text-sm text-muted-foreground">
-                    {game.gameType === "mcq" ? "Multiple Choice" : "Open-Ended"}
-                  </p>
+                  <div className="flex justify-between w-full">
+                    <p className="text-sm text-muted-foreground">
+                      {game.gameType === "mcq" ? "Multiple Choice" : "Open-Ended"}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      finished in: {formatTimeDelta(differenceInSeconds(game.timeEnded, game.createdAt))}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
