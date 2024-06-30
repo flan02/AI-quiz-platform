@@ -16,7 +16,7 @@ const HistoryCard = (props: Props) => {
         <History size={28} strokeWidth={2.5} />
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground">View past quiz attempts</p>
+        <p className="text-sm text-muted-foreground">View past 100 triviathon attempts</p>
       </CardContent>
     </Card>
   )

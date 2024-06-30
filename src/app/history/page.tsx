@@ -19,10 +19,7 @@ const Historypage = async (props: Props) => {
       <Card className="w-full border">
         <CardHeader>
           <div className="flex items-center justify-between">
-
             <CardTitle className="text-2xl lg:text-4xl font-bold">History </CardTitle>
-
-
             <Link className={buttonVariants()} href="/dashboard">
               <LucideLayoutDashboard className="mr-2" />
               Back to Dashboard
@@ -31,10 +28,9 @@ const Historypage = async (props: Props) => {
         </CardHeader>
         <CardContent className="max-h-[60vh] overflow-scroll overflow-x-hidden">
           <History limit={100} userId={session.user.id} />
-
         </CardContent>
       </Card>
-      <span className="text-sm md:text-lg lg:text-2xl mt-4">last 100 games</span>
+      <span className="text-sm md:text-lg lg:text-xl mt-4">last 100 games</span>
     </div>
   );
 }

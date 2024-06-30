@@ -1,7 +1,7 @@
 import HistoryCard from "@/components/dashboard/HistoryCard"
 import HotTopicsCard from "@/components/dashboard/HotTopicsCard"
 import QuizCard from "@/components/dashboard/QuizCard"
-import RandomGame from "@/components/dashboard/RandomGame"
+import UltimateChallenge from "@/components/dashboard/UltimateChallenge"
 import RecentActivities from "@/components/dashboard/RecentActivities"
 import DetailsDialog from "@/components/DetailsDialog"
 import { getAuthSession } from "@/lib/nextauth"
@@ -33,8 +33,8 @@ const Dashboardpage = async (props: Props) => {
         </div>
         <div className="grid gap-4 mt-4 md:grid-cols-1 lg:grid-cols-2 md:mx-0 sm:mx-8 mx-0">
           <HotTopicsCard />
-          <div className="space-y-4 col-span-4 md:col-span-1">
-            <RandomGame />
+          <div className="space-y-4 col-span-4 md:col-span-1 ">
+            <UltimateChallenge />
             <RecentActivities />
           </div>
         </div>

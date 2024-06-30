@@ -1,5 +1,6 @@
 //'use client'  // ! It could be 'use server' by default. Pay attention to console errors
 
+import { useEffect } from "react"
 import CustomWordCloud from "../CustomWordCloud"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card"
 import { getTopics } from "@/services/server"
@@ -19,6 +20,8 @@ const HotTopicsCard = async (props: Props) => {
       value: topic.count
     }
   })
+
+
 
   return (
     <Card className="col-span-4 lg:col-span-1">
