@@ -30,14 +30,14 @@ const RecentActivities = async (props: Props) => {
 
 
   return (
-    <Card className="hover:cursor-pointer hover:opacity-75">
+    <Card className="">
       <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-        <CardTitle className="text-2xl font-bold">Recent Activities</CardTitle>
+        <CardTitle className="text-2xl font-bold hover:cursor-pointer hover:opacity-75">Recent Activities</CardTitle>
         <Rewind size={28} strokeWidth={2.5} />
 
       </CardHeader>
       <CardContent className="max-h-[580px] overflow-scroll-hidden">
-        <CardDescription className="mb-4">
+        <CardDescription className="mb-4 hover:cursor-pointer hover:opacity-75">
           You have played a total of {games.length} games. Take a look at your latest games played.
         </CardDescription>
         <CardDescription>

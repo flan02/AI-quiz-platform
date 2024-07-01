@@ -32,11 +32,12 @@ export type Game = {
 
 type Props = {
   game: Game  // ? I should define an interface for this object.
+  randomizedAt?: Date
 }
 
 const BLANKS = '_____'
 
-const OpenEnded = ({ game }: Props) => {
+const OpenEnded = ({ game, randomizedAt }: Props) => {
   const [questionIndex, setQuestionIndex] = React.useState<number>(0)
   const [blankAnswer, setBlankAnswer] = React.useState<string>('')
   const [hasEnded, setHasEnded] = React.useState<boolean>(false)
@@ -120,9 +121,9 @@ const OpenEnded = ({ game }: Props) => {
     return (
       <div className="flex flex-col items-center justify-center mx-auto h-[90vh] md:w-[50vw] max-w-2xl w-[70vw]">
         <div className="min-w-[350px] text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
-          You completed in {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
+          You completed in {formatTimeDelta(differenceInSeconds(now, randomizedAt ?? game.createdAt))}
         </div>
-        <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 min-w-[350px]')}>
+        <Link href={`/statistics/${game._id}${randomizedAt ? "_" + randomizedAt.getTime() : ""}`} className={cn(buttonVariants(), 'py-5 mt-2 min-w-[350px]')}>
           View Statistics
           <BarChart className="w-6 h-4 ml-2" />
         </Link>
@@ -143,7 +144,7 @@ const OpenEnded = ({ game }: Props) => {
           </p>
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
-            {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
+            {formatTimeDelta(differenceInSeconds(now, randomizedAt ?? game.createdAt))}
           </div>
         </div>
 

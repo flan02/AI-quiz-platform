@@ -33,9 +33,10 @@ export type Game = {
 
 type Props = {
   game: Game  // ? I should define an interface for this object.
+  randomizedAt?: Date
 }
 
-const Mcq = ({ game }: Props) => {
+const Mcq = ({ game, randomizedAt }: Props) => {
   //console.log(game);
   const [questionIndex, setQuestionIndex] = React.useState<number>(0)
   const [selectedChoice, setSelectedChoice] = React.useState<number>(0)
@@ -146,9 +147,10 @@ const Mcq = ({ game }: Props) => {
       <div className="h-[90vh] flex flex-col items-center justify-center lg:w-full md:w-[50vw] max-w-2xl w-[70vw] mx-auto">
         <h1 className="text-xl">TriviaAI ended 🎀</h1>
         <div className="min-w-[350px] text-center px-4 py-2 mt-2 font-semibold text-white bg-green-500 rounded-md whitespace-nowrap">
-          You completed in {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
+          You completed in {formatTimeDelta(differenceInSeconds(now, randomizedAt ?? game.createdAt))}
         </div>
-        <Link href={`/statistics/${game._id}`} className={cn(buttonVariants(), 'py-5 mt-2 min-w-[350px]')}>
+
+        <Link href={`/statistics/${game._id}${randomizedAt ? "_" + now.getTime() : ""}`} className={cn(buttonVariants(), 'py-5 mt-2 min-w-[350px]')}>
           View Statistics
           <BarChart className="w-6 h-4 ml-2" />
         </Link>
@@ -171,7 +173,7 @@ const Mcq = ({ game }: Props) => {
           </p>
           <div className="flex self-start mt-3 text-slate-400">
             <Timer className="mr-2" />
-            {formatTimeDelta(differenceInSeconds(now, game.createdAt))}
+            {formatTimeDelta(differenceInSeconds(now, randomizedAt ?? game.createdAt))}
           </div>
         </div>
         <McqCounter correctAnswers={correctAnswers} wrongAnswers={wrongAnswers} />

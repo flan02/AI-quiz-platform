@@ -22,7 +22,7 @@ const Dashboardpage = async (props: Props) => {
   if (!session?.user) return redirect('/')
   return (
     <main>
-      <div className="px-1 py-8 mx-auto max-w-7xl lg:h-screen">
+      <div className="px-1 py-8 mx-auto max-w-7xl lg:h-[90vh]">
         <div className="flex items-center">
           <h2 className="mr-4 text-3xl font-bold tracking-tight">Dashboard</h2>
           <DetailsDialog />

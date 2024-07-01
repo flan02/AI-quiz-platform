@@ -11,6 +11,7 @@ import TimeTakenCard from "@/components/statistics/TimeTakenCard";
 import QuestionsList from "@/components/statistics/QuestionsList";
 import { getGame } from "@/services/server";
 
+
 type Props = {
   params: {
     gameId: string;
@@ -29,12 +30,22 @@ const StatisticsPage = async ({ params }: Props) => {
     return redirect("/");
   }
   */
+  console.log('Params received are: ', params)
 
-  const game = await getGame(params.gameId)
+  let id;
+  let ultimateTime = null;
+  if ((params.gameId).includes('_')) {
+    id = params.gameId.split('_')[0];
+    ultimateTime = params.gameId.split('_')[1];
+  }
+
+  //console.log(new Date(parseInt(ultimateTime)))
+
+  console.log("ULTIMATE VALUE: ", ultimateTime)
+
+  const game = await getGame(id ?? params.gameId);
   //if (!game || game.gameType !== 'mcq') return redirect('/quiz')
   //return <Mcq game={game} />
-
-
 
   let accuracy: number = 0;
 
@@ -56,7 +67,7 @@ const StatisticsPage = async ({ params }: Props) => {
 
   return (
     <>
-      <div className="p-8 mx-auto max-w-7xl lg:mb-12">
+      <div className="p-8 mx-auto max-w-7xl lg:mb-12 min-h-[85vh]">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-bold tracking-tight">Summary</h2>
           <div className="flex items-center space-x-2">
@@ -71,8 +82,8 @@ const StatisticsPage = async ({ params }: Props) => {
           <ResultsCard accuracy={accuracy} />
           <AccuracyCard accuracy={accuracy} />
           <TimeTakenCard
-            timeEnded={new Date(game.timeEnded)} /* HERE I NEED THE TIMEENDED VALUE FROM DATABASE */
-            timeStarted={new Date(game.createdAt ?? 0)}
+            timeEnded={ultimateTime ? new Date() : new Date(game.timeEnded)} /* HERE I NEED THE TIMEENDED VALUE FROM DATABASE */
+            timeStarted={ultimateTime ? new Date(parseInt(ultimateTime)) : new Date(game.createdAt ?? 0)}
           />
         </div>
         <QuestionsList questions={game.questions} />
