@@ -25,10 +25,15 @@ const UltimatePage = async (props: Props) => {
   /* 
 TODO Aca lo que tengo que hacer es primero capturar de la colleccion de games un _id aleatorio en una consulta
 */
-  const randomGame = await getRandomGame()
-  console.log(randomGame._id);
-  const game = await getGame(randomGame._id)
-  if (!randomGame) return redirect('/quiz')
+  let game = []
+  let randomGame
+  do {
+    randomGame = await getRandomGame()
+    console.log(randomGame._id);
+    game = await getGame(randomGame._id)
+
+    if (!game) return redirect('/quiz')
+  } while (game.length === 0)
   if (randomGame.gameType == 'mcq') return <Mcq game={game} randomizedAt={new Date()} />
   if (randomGame.gameType !== 'mcq') return <OpenEnded game={game} randomizedAt={new Date()} />
 

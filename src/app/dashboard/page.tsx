@@ -7,6 +7,8 @@ import DetailsDialog from "@/components/DetailsDialog"
 import { getAuthSession } from "@/lib/nextauth"
 import { redirect } from "next/navigation"
 import React from "react";
+import { revalidatePath } from "next/cache"
+
 
 type Props = {}
 
@@ -20,6 +22,7 @@ const Dashboardpage = async (props: Props) => {
   const session = await getAuthSession()
   // console.log('Session value is: ', session);
   if (!session?.user) return redirect('/')
+  revalidatePath('/dashboard')
   return (
     <main>
       <div className="px-1 py-8 mx-auto max-w-7xl lg:h-[90vh]">

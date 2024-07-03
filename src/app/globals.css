@@ -98,3 +98,11 @@
 ::-webkit-scrollbar-track {
   background-color: rgb(202, 218, 238); 
 }
+
+.title {
+  width: 300px; 
+  height: 232.531px;
+  z-index: 0; 
+  cursor: pointer; 
+  overflow: visible
+}

@@ -37,9 +37,9 @@ export async function getAllGames(userId: string, limit: number = 10) {
 export async function getRandomGame() {
   try {
     connectDB()
-    const randomGame = await Game.findOne().skip(Math.floor(Math.random() * await Game.countDocuments()))
-    //  const getGame = await Question.find({ gameId: randomGameId }, { gameId: 0 })
-    //  const responseParsed = JSON.parse(JSON.stringify(getGame))
+    const totalGames = await Game.countDocuments()
+    const randomGame = await Game.findOne().skip(Math.floor(Math.random() * totalGames))
+
     const randomGameParsed = JSON.parse(JSON.stringify(randomGame))
     return randomGameParsed
 

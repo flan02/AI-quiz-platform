@@ -26,14 +26,20 @@ const UserAccountNav = ({ user }: Props) => {
       <DropdownMenuContent className="bgl" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            {user.name && <p className="text-lg font-semibold">{user.name}</p>}
+            {user.name && <p className="text-lg font-semibold hover:underline">{user.name}</p>}
             {user.email && <p className="text-sm text-zinc-600">{user.email}</p>}
           </div>
         </div>
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href='/'>Meow</Link>
+          <Link href='/' className="text-muted-foreground">games</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href='/' className="text-muted-foreground">preferences</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href='/' className="text-muted-foreground">settings</Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
